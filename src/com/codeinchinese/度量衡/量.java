@@ -5,8 +5,15 @@ public class 量 {
   private 单位 本单位;
   private double 值;
 
-  public static 量 新建() {
-    return new 量();
+  private 量() {}
+
+  private 量(double 值, 单位 单位) {
+    this.值 = 值;
+    this.本单位 = 单位;
+  }
+
+  public static 量 新建(double 值, 单位 单位) {
+    return new 量(值, 单位);
   }
 
   public 量 单位(单位 单位) {
@@ -28,7 +35,7 @@ public class 量 {
   }
 
   public 量 换算(单位 目标单位) throws Exception {
-    return 量.新建().值(功能.换算(this.值, this.本单位, 目标单位)).单位(目标单位);
+    return 量.新建(功能.换算(this.值, this.本单位, 目标单位), 目标单位);
   }
 
   @Override
