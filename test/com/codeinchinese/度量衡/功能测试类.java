@@ -1,7 +1,10 @@
 package com.codeinchinese.度量衡;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -41,7 +44,35 @@ public class 功能测试类 {
   }
 
   @Test
-  public void 确认所有单位都有类型() {
+  public void 取单位信息() {
+    List<单位信息> 信息 = 功能.取单位信息(单位.升);
+    assertEquals(2, 信息.size());
+    assertEquals(new 单位信息(单位.升, 度量类型.体积, 度量衡制度.公制), 信息.get(0));
+    assertEquals(new 单位信息(单位.升, 度量类型.体积, 度量衡制度.市制), 信息.get(1));
+  }
 
+  @Test
+  public void 确认所有单位都有类型() {
+    for (单位 某单位 : 单位.values()) {
+      assertTrue(某单位 + " 无类型", 功能.取单位类型(某单位).size() > 0);
+    }
+  }
+
+  @Test
+  public void 确认所有单位都有制度() {
+    for (单位 某单位 : 单位.values()) {
+      assertTrue(某单位 + " 无制度", 功能.取单位制度(某单位).size() > 0);
+    }
+  }
+
+  @Test
+  public void 确认所有多义单位的含义() {
+    for (单位 某单位 : 单位.values()) {
+      int 类型数 = 功能.取单位类型(某单位).size();
+      int 制度数 = 功能.取单位制度(某单位).size();
+      if (类型数 > 1 || 制度数 > 1) {
+        assertTrue(某单位 + " 应有多义: " + 类型数 + "类型 " + 制度数 + "制度", 功能.取单位信息(某单位).size() > 1);
+      }
+    }
   }
 }
